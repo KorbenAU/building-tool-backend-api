@@ -1,0 +1,8 @@
+C:\Users\Matt Ratcliffe\source\repos\Microservice\Microservice.Services\bin\Debug\netcoreapp3.0\Microservice.Services.deps.json
+C:\Users\Matt Ratcliffe\source\repos\Microservice\Microservice.Services\bin\Debug\netcoreapp3.0\Microservice.Services.dll
+C:\Users\Matt Ratcliffe\source\repos\Microservice\Microservice.Services\bin\Debug\netcoreapp3.0\Microservice.Services.pdb
+C:\Users\Matt Ratcliffe\source\repos\Microservice\Microservice.Services\obj\Debug\netcoreapp3.0\Microservice.Services.csprojAssemblyReference.cache
+C:\Users\Matt Ratcliffe\source\repos\Microservice\Microservice.Services\obj\Debug\netcoreapp3.0\Microservice.Services.AssemblyInfoInputs.cache
+C:\Users\Matt Ratcliffe\source\repos\Microservice\Microservice.Services\obj\Debug\netcoreapp3.0\Microservice.Services.AssemblyInfo.cs
+C:\Users\Matt Ratcliffe\source\repos\Microservice\Microservice.Services\obj\Debug\netcoreapp3.0\Microservice.Services.dll
+C:\Users\Matt Ratcliffe\source\repos\Microservice\Microservice.Services\obj\Debug\netcoreapp3.0\Microservice.Services.pdb
