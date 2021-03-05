@@ -6,6 +6,7 @@ namespace Microservice.Business.Business
 {
     public interface IBusiness
     {
-        ISample Sample { get; }
+        int AddNumbers(int firstNumber, int secondNumber);
+        string WriteToDatabase();
     }
 }

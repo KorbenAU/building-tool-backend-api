@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Microservice.Database
 {
@@ -40,6 +41,22 @@ namespace Microservice.Database
 
             // ADDITIONAL INDEXES
             //modelBuilder.Entity<[TargetEntity]>().HasIndex(b => b.[TargetField]);
+        }
+
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker
+              .Entries()
+              .Where(e => e.Entity is BaseEntity && (
+                e.State == EntityState.Added
+                || e.State == EntityState.Modified));
+            foreach (var entityEntry in entries)
+            {
+                ((BaseEntity)entityEntry.Entity).LastModifiedAt = DateTime.UtcNow;
+                if (entityEntry.State == EntityState.Added)
+                    ((BaseEntity)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
+            }
+            return base.SaveChanges();
         }
 
         public class DataContextFactory : IDesignTimeDbContextFactory<DatabaseContext>

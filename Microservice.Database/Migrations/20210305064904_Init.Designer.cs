@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Microservice.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200904024653_Initial")]
-    partial class Initial
+    [Migration("20210305064904_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

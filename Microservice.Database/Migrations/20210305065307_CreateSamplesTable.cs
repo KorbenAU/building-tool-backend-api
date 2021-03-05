@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Microservice.Database.Migrations
 {
-    public partial class SampleTable : Migration
+    public partial class CreateSamplesTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,6 +13,9 @@ namespace Microservice.Database.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    LastModifiedAt = table.Column<DateTime>(nullable: false),
                     SampleColumn = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

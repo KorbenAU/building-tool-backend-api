@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Microservice.Database.Entities
 {
-    public class Sample
+    public class Sample : BaseEntity
     {
-        public int Id { get; set; }
         public string SampleColumn { get; set; }
     }
 }

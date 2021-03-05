@@ -11,7 +11,7 @@ namespace Microservice.Test
         public void SampleTest()
         {
             // Arrange: setup and get ready for the test (sut = system under test)
-            var sut = new Business.Business.Concrete.Sample(null);
+            var sut = new Business.Business.Concrete.Business(null);
 
             // Act: invoke a system or method
             var sum = sut.AddNumbers(1, 5);
