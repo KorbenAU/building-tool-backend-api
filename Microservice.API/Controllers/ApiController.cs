@@ -25,7 +25,7 @@ namespace Microservice.API.Controllers
         [ApiExplorerSettings(GroupName = "Sample APIs")]
         public IActionResult SampleApiCall()
         {
-            return Ok(_business.Sample.WriteToDatabase());
+            return Ok(_business.WriteToDatabase());
         }
 
     }

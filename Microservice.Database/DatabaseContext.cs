@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Microservice.Database
 {
@@ -13,7 +14,7 @@ namespace Microservice.Database
         public static string ConnectionString { get; set; }
 
         // Database Entities\Tables
-        public DbSet<Sample> Samples { get; set; }
+        public DbSet<BaseEntity> BaseEntities { get; set; }
         //public DbSet<[MyEntityName]> [PluralisedEntityName] { get; set; }
 
 
@@ -22,7 +23,7 @@ namespace Microservice.Database
             if (!string.IsNullOrEmpty(connectionString))
                 ConnectionString = connectionString;
 
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -40,6 +41,22 @@ namespace Microservice.Database
 
             // ADDITIONAL INDEXES
             //modelBuilder.Entity<[TargetEntity]>().HasIndex(b => b.[TargetField]);
+        }
+
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker
+              .Entries()
+              .Where(e => e.Entity is BaseEntity && (
+                e.State == EntityState.Added
+                || e.State == EntityState.Modified));
+            foreach (var entityEntry in entries)
+            {
+                ((BaseEntity)entityEntry.Entity).LastModifiedAt = DateTime.UtcNow;
+                if (entityEntry.State == EntityState.Added)
+                    ((BaseEntity)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
+            }
+            return base.SaveChanges();
         }
 
         public class DataContextFactory : IDesignTimeDbContextFactory<DatabaseContext>

@@ -9,6 +9,7 @@ using Microservice.Business.Automapper;
 using Microservice.Business.Business;
 using Microservice.Business.Repositories;
 using Microservice.Database;
+using Microservice.Database.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -59,7 +60,7 @@ namespace Microservice.API
 
             // Add Unit of Work
             services.AddScoped<IBusiness, Business.Business.Concrete.Business>();
-            services.AddScoped<IRepositories, Business.Repositories.Concrete.Repositories>();
+            services.AddScoped(typeof(IDatabaseRepository<>), typeof(Business.Repositories.Concrete.DatabaseRepository<>));
 
             // Add Swagger
             services.AddSwaggerGen(c =>
