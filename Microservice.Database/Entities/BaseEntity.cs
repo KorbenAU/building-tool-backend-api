@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Microservice.Database.Entities
 {
-    public class BaseEntity
+    public partial class BaseEntity
     {
         public int Id { get; set; }
         public bool IsDeleted { get; set; }
