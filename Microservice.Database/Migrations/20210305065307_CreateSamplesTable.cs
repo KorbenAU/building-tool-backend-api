@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Microservice.Database.Migrations
 {
-    public partial class Init : Migration
+    public partial class CreateSamplesTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
