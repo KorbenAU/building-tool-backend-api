@@ -6,16 +6,16 @@ namespace Microservice.Business.Business.Concrete
 {
     public class Business : IBusiness
     {
-        private readonly IDatabaseRepository<BaseEntity> _repositories;
+        private readonly IDatabaseRepository<Sample> _repositories;
 
-        public Business(IDatabaseRepository<BaseEntity> repositories)
+        public Business(IDatabaseRepository<Sample> repositories)
         {
             _repositories = repositories;
         }
 
         public string WriteToDatabase()
         {
-            var entity = new Database.Entities.BaseEntity();
+            var entity = new Database.Entities.Sample();
             _repositories.Create(entity);
 
             return "OK";

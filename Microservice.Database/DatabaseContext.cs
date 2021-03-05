@@ -14,7 +14,7 @@ namespace Microservice.Database
         public static string ConnectionString { get; set; }
 
         // Database Entities\Tables
-        public DbSet<BaseEntity> BaseEntities { get; set; }
+        public DbSet<Sample> Samples { get; set; }
         //public DbSet<[MyEntityName]> [PluralisedEntityName] { get; set; }
 
 
@@ -23,7 +23,7 @@ namespace Microservice.Database
             if (!string.IsNullOrEmpty(connectionString))
                 ConnectionString = connectionString;
 
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
