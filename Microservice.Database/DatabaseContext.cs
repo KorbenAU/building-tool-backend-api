@@ -23,7 +23,7 @@ namespace Microservice.Database
             if (!string.IsNullOrEmpty(connectionString))
                 ConnectionString = connectionString;
 
-            //Database.Migrate();
+            Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

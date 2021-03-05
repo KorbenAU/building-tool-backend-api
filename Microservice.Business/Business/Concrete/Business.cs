@@ -15,7 +15,11 @@ namespace Microservice.Business.Business.Concrete
 
         public string WriteToDatabase()
         {
-            var entity = new Database.Entities.Sample();
+            var entity = new Database.Entities.Sample()
+            {
+                SampleColumn = $"Sample entry from {DateTime.Now.ToString()}"
+            };
+
             _repositories.Create(entity);
 
             return "OK";
