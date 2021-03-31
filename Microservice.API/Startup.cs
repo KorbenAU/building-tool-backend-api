@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microservice.API.Extensions;
 using Microservice.Business.Automapper;
 using Microservice.Business.Business;
 using Microservice.Business.Repositories;
@@ -39,6 +40,26 @@ namespace Microservice.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("cors-policy",
+                    builder =>
+                    {
+                        var allowedCorsUrls = Configuration
+                            .GetSection("Security:AllowedCorsUrls")
+                            .Get<string[]>();
+
+                        if (allowedCorsUrls is not null)
+                            builder.WithOrigins(allowedCorsUrls)
+                            .AllowCredentials();
+                        else
+                            builder.AllowAnyOrigin();
+
+                        builder.AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
 
             // Database Setup
             var ConnectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -91,9 +112,16 @@ namespace Microservice.API
             else
                 app.UseHsts();
 
+            app.ConfigureExceptionHandler();
+
+            if (Configuration.GetValue<bool>("Security:ForceHttpsRedirect"))
+                app.UseHttpsRedirection();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("cors-policy");
 
             app.UseEndpoints(endpoints =>
             {
