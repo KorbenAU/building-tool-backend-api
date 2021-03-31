@@ -117,8 +117,6 @@ namespace Microservice.API
             if (Configuration.GetValue<bool>("Security:ForceHttpsRedirect"))
                 app.UseHttpsRedirection();
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseCors("cors-policy");
