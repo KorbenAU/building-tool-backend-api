@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Microservice.Database
 {
@@ -41,10 +42,33 @@ namespace Microservice.Database
 
             // ADDITIONAL INDEXES
             //modelBuilder.Entity<[TargetEntity]>().HasIndex(b => b.[TargetField]);
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var isDeletedProperty = entityType.FindProperty("IsDeleted");
+                if (isDeletedProperty != null && isDeletedProperty.ClrType == typeof(bool))
+                {
+                    var parameter = Expression.Parameter(entityType.ClrType, "p");
+                    var filter = Expression.Lambda(
+                        Expression.Not(
+                            Expression.Property(parameter, isDeletedProperty.PropertyInfo)),
+                        parameter);
+                    entityType.SetQueryFilter(filter);
+                }
+            }
         }
 
         public override int SaveChanges()
         {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                if (entry.State == EntityState.Deleted)
+                {
+                    entry.State = EntityState.Modified;
+                    entry.CurrentValues["IsDeleted"] = true;
+                }
+            }
+
             var entries = ChangeTracker
               .Entries()
               .Where(e => e.Entity is BaseEntity && (
