@@ -92,7 +92,7 @@ namespace Microservice.API
             });
 
             // EntityFramework AutoMapper
-            var config = new MapperConfiguration(cfg =>
+            services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile(new AutoMapperProfileConfiguration());
             });
