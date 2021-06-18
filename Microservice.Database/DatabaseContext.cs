@@ -15,7 +15,8 @@ namespace Microservice.Database
         public static string ConnectionString { get; set; }
 
         // Database Entities\Tables
-        
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<User>  Users { get; set; }
         //public DbSet<[MyEntityName]> [PluralisedEntityName] { get; set; }
 
 
