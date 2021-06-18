@@ -9,9 +9,6 @@ namespace Microservice.Business.Models
          [Required(ErrorMessage = Constants.EmptyUsernameOrPassword)]
          public string Password { get; set; }
          
-         [Required(ErrorMessage = Constants.EmptyUserIdentifier)]
-         public string Identifier { get; set; }
- 
          [Required(ErrorMessage = Constants.EmptyUsernameOrPassword)]
          [EmailAddress]
          public string EmailAddress { get; set; }
