@@ -76,5 +76,16 @@ namespace Microservice.Business.Repositories.Concrete
             _entities.Remove(entity);
             _dbContext.SaveChanges();
         }
+
+        public T ReadOne(Func<T, bool> predicate, params Expression<Func<T, object>>[] navigationProperties)
+        {
+            IQueryable<T> dbQuery = _dbContext.Set<T>();
+
+            //Apply eager loading
+            foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                dbQuery = dbQuery.Include<T, object>(navigationProperty);
+
+            return dbQuery.SingleOrDefault(predicate);
+        }
     }
 }

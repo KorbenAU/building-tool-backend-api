@@ -22,5 +22,7 @@ namespace Microservice.Business.Repositories
         void Update(T entity);
 
         void Delete(int id);
+
+        T ReadOne(Func<T, bool> predicate, params Expression<Func<T, object>>[] navigationProperties);
     }
 }

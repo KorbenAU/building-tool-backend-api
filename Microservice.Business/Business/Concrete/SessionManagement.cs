@@ -15,16 +15,17 @@ namespace Microservice.Business.Business.Concrete
         public SessionManagement(
             IConfiguration configuration,
             IDatabaseRepository<Session> sessionRepository)
-            {
-                _configuration = configuration;
-                _sessionRepository = sessionRepository;
-            }
-    
+        {
+            _configuration = configuration;
+            _sessionRepository = sessionRepository;
+        }
+
         public bool IsSessionValid(string sessionIdentifier, string ipAddress, bool extendSession = true)
         {
             if (string.IsNullOrEmpty(sessionIdentifier))
             {
-                Log.Information("Attempted to validate a session, but no session identifier was provided by IP {0}", ipAddress);
+                Log.Information("Attempted to validate a session, but no session identifier was provided by IP {0}",
+                    ipAddress);
                 return false;
             }
 
@@ -32,13 +33,16 @@ namespace Microservice.Business.Business.Concrete
 
             if (session == default)
             {
-                Log.Information("Attempted to validate a session with an unknown session identifier {0}", sessionIdentifier);
+                Log.Information("Attempted to validate a session with an unknown session identifier {0}",
+                    sessionIdentifier);
                 return false;
             }
 
             if (session.ExpiresAt < DateTime.UtcNow)
             {
-                Log.Information("Attempted to validate a session that has expired, with an unknown session identifier {0}", sessionIdentifier);
+                Log.Information(
+                    "Attempted to validate a session that has expired, with an unknown session identifier {0}",
+                    sessionIdentifier);
                 return false;
             }
 

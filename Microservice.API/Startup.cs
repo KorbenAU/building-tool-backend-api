@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microservice.API.Extensions;
+using Microservice.API.Filters;
 using Microservice.Business.Automapper;
 using Microservice.Business.Business;
 using Microservice.Business.Repositories;
@@ -52,12 +53,12 @@ namespace Microservice.API
 
                         if (allowedCorsUrls is not null)
                             builder.WithOrigins(allowedCorsUrls)
-                            .AllowCredentials();
+                                .AllowCredentials();
                         else
                             builder.AllowAnyOrigin();
 
                         builder.AllowAnyHeader()
-                        .AllowAnyMethod();
+                            .AllowAnyMethod();
                     });
             });
 
@@ -67,46 +68,43 @@ namespace Microservice.API
             dbContext.Seed();
 
             services.AddDbContext<DatabaseContext>(options =>
-            {
-                options.UseSqlServer(ConnectionString,
-                sqlServerOptionsAction: sqlOptions =>
                 {
-                    sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(60), null);
-                    sqlOptions.CommandTimeout(300);
-                });
-            },
-            ServiceLifetime.Transient,
-            ServiceLifetime.Transient
+                    options.UseSqlServer(ConnectionString,
+                        sqlServerOptionsAction: sqlOptions =>
+                        {
+                            sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(60), null);
+                            sqlOptions.CommandTimeout(300);
+                        });
+                },
+                ServiceLifetime.Transient,
+                ServiceLifetime.Transient
             );
 
             // Add Unit of Work
             services.AddScoped<IRegistration, Business.Business.Concrete.Registration>();
             services.AddScoped<ISessionManagement, Business.Business.Concrete.SessionManagement>();
-            services.AddScoped(typeof(IDatabaseRepository<>), typeof(Business.Repositories.Concrete.DatabaseRepository<>));
+            services.AddScoped(typeof(IDatabaseRepository<>),
+                typeof(Business.Repositories.Concrete.DatabaseRepository<>));
+            services.AddScoped<IAuthentication, Business.Business.Concrete.Authentication>();
 
             // Add Swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Microservice API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Microservice API", Version = "v1"});
                 c.DocInclusionPredicate((_, api) => !string.IsNullOrWhiteSpace(api.GroupName));
-                c.TagActionsBy(api => new[] { api.GroupName });
+                c.TagActionsBy(api => new[] {api.GroupName});
+                c.OperationFilter<RequiresAdditionalHeaders>();
             });
 
             // EntityFramework AutoMapper
-            services.AddAutoMapper(cfg =>
-            {
-                cfg.AddProfile(new AutoMapperProfileConfiguration());
-            });
+            services.AddAutoMapper(cfg => { cfg.AddProfile(new AutoMapperProfileConfiguration()); });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Microservice");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Microservice"); });
 
             if (env.EnvironmentName.Equals("development", StringComparison.OrdinalIgnoreCase))
                 app.UseDeveloperExceptionPage();
@@ -158,7 +156,6 @@ namespace Microservice.API
                 logger.MinimumLevel.Information();
 
             Log.Logger = logger.CreateLogger();
-
         }
     }
 }
