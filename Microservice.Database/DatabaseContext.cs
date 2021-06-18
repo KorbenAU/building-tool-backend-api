@@ -15,7 +15,7 @@ namespace Microservice.Database
         public static string ConnectionString { get; set; }
 
         // Database Entities\Tables
-        public DbSet<Sample> Samples { get; set; }
+        
         //public DbSet<[MyEntityName]> [PluralisedEntityName] { get; set; }
 
 

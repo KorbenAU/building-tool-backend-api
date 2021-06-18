@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microservice.API.Extensions;
 using Microservice.Business.Automapper;
-using Microservice.Business.Business;
 using Microservice.Business.Repositories;
 using Microservice.Database;
 using Microservice.Database.Entities;
@@ -80,7 +79,6 @@ namespace Microservice.API
             );
 
             // Add Unit of Work
-            services.AddScoped<IBusiness, Business.Business.Concrete.Business>();
             services.AddScoped(typeof(IDatabaseRepository<>), typeof(Business.Repositories.Concrete.DatabaseRepository<>));
 
             // Add Swagger
